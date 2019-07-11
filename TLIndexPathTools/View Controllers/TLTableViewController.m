@@ -264,7 +264,12 @@
                 [self tableView:tableView configureCell:cell atIndexPath:indexPath];
                 CGSize systemSize = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
                 self.currentCellForRowAtIndexPath = tmp;
+#if TARGET_IOS
                 CGFloat separatorHeight = tableView.separatorStyle == UITableViewCellSeparatorStyleNone ? 0 : 1 / [UIScreen mainScreen].scale;
+#else
+                CGFloat separatorHeight = 0;
+#endif
+                return systemSize.height + separatorHeight;
                 return systemSize.height + separatorHeight;
             }
         } else if (CGRectIsEmpty(cell.bounds)) {
