@@ -172,6 +172,9 @@
         if (indexPath == nil) {
             indexPath = [self.tableView indexPathForCell:cell];
         }
+        if (indexPath == nil) {
+            return nil;
+        }
         controller = [self tableView:tableView instantiateViewControllerForCell:cell atIndexPath:indexPath];
         if (controller) {
             [self setViewController:controller forKey:key];
@@ -213,6 +216,7 @@
     UIViewController *controller = [self tableView:tableView viewControllerForCell:cell];
     if (controller) {
         [self addChildViewController:controller];
+        [controller didMoveToParentViewController: self];
     }
     [self tableView:tableView configureCell:cell atIndexPath:indexPath];
     self.currentCellForRowAtIndexPath = nil;
@@ -290,6 +294,8 @@
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UIViewController *controller = [self tableView:tableView viewControllerForCell:cell];
+    [controller.view removeFromSuperview];
+    [controller willMoveToParentViewController: nil];
     [controller removeFromParentViewController];
 }
 
